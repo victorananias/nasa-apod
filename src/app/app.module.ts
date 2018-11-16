@@ -7,13 +7,15 @@ import { MediaComponent } from './media/media.component';
 import { HttpClientModule } from '@angular/common/http';
 import { VideoFrameComponent } from './video-frame/video-frame.component';
 import { ListComponent } from './list/list.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MediaComponent,
     VideoFrameComponent,
-    ListComponent
+    ListComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
