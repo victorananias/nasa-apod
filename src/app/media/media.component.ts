@@ -7,15 +7,15 @@ import { AppService } from '../app.service';
   styleUrls: ['./media.component.css']
 })
 export class MediaComponent implements OnInit {
-  media = {};
+  media: Media;
 
   constructor(private service: AppService) { }
 
   ngOnInit() {
     this.service.getMedia(/* { date: '2018-11-01' } */)
-      .subscribe(response => {
-        this.media = response;
-        console.log(response);
+      .subscribe((media: Media) => {
+        this.media = media;
+        console.log(media);
       });
   }
 

@@ -7,13 +7,13 @@ import { AppService } from '../app.service';
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
-  mediaList: any = [];
+  mediaList: Media[] = [];
   constructor(private service: AppService) { }
 
   ngOnInit() {
     this.service.getMedia({start_date: '2018-11-01'})
-      .subscribe(response => {
-        this.mediaList = response;
+      .subscribe((mediaList: Media[]) => {
+        this.mediaList = mediaList;
       });
   }
 
