@@ -1,0 +1,17 @@
+.title {
+    margin-bottom: 0.5em;
+}
+
+.media-container {
+    max-width: 50vw;
+    max-height: 80vh;
+    float: left;
+    margin: 1em;
+}
+
+.text-container {
+    margin: 1em;
+    max-height: 80vh;
+    /* overflow-y: auto; */
+    letter-spacing: 1px;
+}

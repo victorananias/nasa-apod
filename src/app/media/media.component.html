@@ -1,13 +1,16 @@
-<h2>{{ media.title }}</h2>
 
-<div *ngIf="media.media_type == 'image'">
+
+<div *ngIf="media?.media_type == 'image'" class="media-container">
   <img [src]="media.url" [alt]="media.title">
 </div>
 
-<p>
-  {{ media.explanation }}
-</p>
-
-<div *ngIf="media.media_type == 'video'">
+<div *ngIf="media?.media_type == 'video'" class="media-container">
   <app-video-frame [src]="media?.url"></app-video-frame>
+</div>
+<div class="text-container">
+
+  <h2 class="title">{{ media?.title }}</h2>
+  <p>
+    {{ media?.explanation }}
+  </p>
 </div>
