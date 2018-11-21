@@ -1,0 +1,20 @@
+.container {
+    /* width: 100vw; */
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+.title {
+    /* margin-bottom: 0.5em; */
+}
+
+.item {
+    width: 45vw;
+    height: 85vh;
+}
+
+.item img {
+    width: 300px;
+    border: 20px solid white;
+    border-radius: 1px;
+}

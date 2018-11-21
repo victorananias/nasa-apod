@@ -3,15 +3,23 @@
 }
 
 .media-container {
-    max-width: 50vw;
+    width: 50vw;
     max-height: 80vh;
     float: left;
-    margin: 1em;
+}
+
+.media-container img {
+    max-width: 45vw;
+    max-height: 85vh;
+    margin-left: auto;
+    margin-right: 2vw;
+    margin-top: 5vh;
+    display: block;
 }
 
 .text-container {
     margin: 1em;
     max-height: 80vh;
     /* overflow-y: auto; */
-    letter-spacing: 1px;
+    /* letter-spacing: 1px; */
 }
