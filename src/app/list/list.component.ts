@@ -8,10 +8,16 @@ import { AppService } from '../app.service';
 })
 export class ListComponent implements OnInit {
   mediaList: Media[] = [];
-  constructor(private service: AppService) { }
+  constructor(
+    private service: AppService
+  ) { }
 
   ngOnInit() {
-    this.service.getMedia({start_date: '2018-11-01'})
+    const date = new Date;
+    console.log(date.getDay());
+
+
+    this.service.getMedia({start_date: '2018-11-18'})
       .subscribe((mediaList: Media[]) => {
         this.mediaList = mediaList;
       });

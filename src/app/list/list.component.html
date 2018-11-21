@@ -1,5 +1,7 @@
 <div *ngFor="let media of mediaList">
-    <h2>{{ media.title }}</h2>
-    <img *ngIf="media.media_type == 'image'" [src]="media.url" [alt]="media.title">
-    <app-video-frame  *ngIf="media.media_type == 'video'" [src]="media?.url"></app-video-frame>
+    <div style="float: left; width: 24%; height: 24%; background-color: red; margin: 0.5%">
+        <img *ngIf="media.media_type == 'image'" [src]="media.url" [alt]="media.title">
+        <app-video-frame  *ngIf="media.media_type == 'video'" [src]="media?.url" ></app-video-frame>
+    </div>
+    <!-- <h2>{{ media.title }}</h2> -->
 </div>
