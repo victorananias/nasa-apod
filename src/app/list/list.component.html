@@ -1,5 +1,5 @@
-<div *ngFor="let media of mediaList">
-    <div style="float: left; width: 24%; height: 24%; background-color: red; margin: 0.5%">
+<div class="container">
+    <div *ngFor="let media of mediaList" class="item">
         <img *ngIf="media.media_type == 'image'" [src]="media.url" [alt]="media.title">
         <app-video-frame  *ngIf="media.media_type == 'video'" [src]="media?.url" ></app-video-frame>
     </div>

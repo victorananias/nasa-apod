@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+}
+
+.item {
+    width: 24%;
+    flex: 25%;
+    height: 23%;
+    background-color: white;
+    margin: 0.5%;
+    align-self: flex-start;
+}

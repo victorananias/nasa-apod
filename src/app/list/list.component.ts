@@ -17,7 +17,7 @@ export class ListComponent implements OnInit {
     console.log(date.getDay());
 
 
-    this.service.getMedia({start_date: '2018-11-18'})
+    this.service.getMedia({start_date: '2018-11-10'})
       .subscribe((mediaList: Media[]) => {
         this.mediaList = mediaList;
       });
