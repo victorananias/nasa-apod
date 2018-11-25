@@ -8,19 +8,32 @@ import { AppService } from '../app.service';
 })
 export class ListComponent implements OnInit {
   mediaList: Media[] = [];
+  columns: Media[][] = [];
   constructor(
     private service: AppService
   ) { }
 
   ngOnInit() {
-    const date = new Date;
-    console.log(date.getDay());
-
-
-    this.service.getMedia({start_date: '2018-11-10'})
+    this.service.getMedia({start_date: '2018-11-11'})
       .subscribe((mediaList: Media[]) => {
+        console.log(mediaList);
+
         this.mediaList = mediaList;
+        this.generateColumns();
       });
   }
+
+  generateColumns() {
+    let p = 0;
+    this.columns[p] = [];
+    for (let i = 0; i < this.mediaList.length; i++ ) {
+      this.columns[p].push(this.mediaList[i]);
+      if ((i + 1) % 5 === 0 && i + 1 !== this.mediaList.length) {
+        p++;
+        this.columns[p] = [];
+      }
+    }
+  }
+
 
 }

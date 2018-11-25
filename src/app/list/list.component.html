@@ -1,7 +1,10 @@
-<div class="container">
-    <div *ngFor="let media of mediaList" class="item">
-        <img *ngIf="media.media_type == 'image'" [src]="media.url" [alt]="media.title">
-        <app-video-frame  *ngIf="media.media_type == 'video'" [src]="media?.url" ></app-video-frame>
+<div class="row">
+    <div class="column" *ngFor="let column of columns">
+        <div *ngFor="let media of column" class="item">
+            <h2>{{ media?.date }}</h2>
+            <img *ngIf="media.media_type == 'image'" [src]="media.url" [alt]="media.title" >
+            <app-video-frame  *ngIf="media.media_type == 'video'" [src]="media?.url" ></app-video-frame>
+        </div>
     </div>
     <!-- <h2>{{ media.title }}</h2> -->
 </div>
