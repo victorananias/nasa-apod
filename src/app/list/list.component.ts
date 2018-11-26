@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-list',
@@ -10,11 +11,16 @@ export class ListComponent implements OnInit {
   mediaList: Media[] = [];
   columns: Media[][] = [];
   constructor(
-    private service: AppService
+    private service: AppService,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit() {
-    this.service.getMedia({start_date: '2018-11-11'})
+    const date = new Date();
+    date.setDate(date.getDate() - 14);
+    console.log(this.datePipe.transform(date, 'yyyy-MM-dd') );
+
+    this.service.getMedia({start_date: this.datePipe.transform(date, 'yyyy-MM-dd') })
       .subscribe((mediaList: Media[]) => {
         console.log(mediaList);
 
