@@ -16,6 +16,9 @@
   margin-top: 8px;
   width: 100%;
   vertical-align: middle;
+  background-color: #000a12;
+  padding: 3px;
+  border-radius: 2px;
 }
 
 .item img {
