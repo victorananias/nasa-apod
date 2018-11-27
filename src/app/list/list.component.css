@@ -16,11 +16,19 @@
   margin-top: 8px;
   width: 100%;
   vertical-align: middle;
-  background-color: #000a12;
-  padding: 3px;
+  /* background-color: #000a12; */
+  /* padding: 3px; */
   border-radius: 2px;
 }
 
 .item img {
   width: 100%;
+}
+
+h2 {
+  font-family: 'Satisfy', cursive;
+  margin-bottom: -10%;
+  margin-left: 2%;
+  z-index: 2;
+  position: relative;
 }
