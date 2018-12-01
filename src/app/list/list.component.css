@@ -27,8 +27,11 @@
 
 h2 {
   font-family: 'Roboto', sans-serif;
-  margin-bottom: -8%;
-  margin-left: 2%;
+  /* margin-bottom: -8%;
+  margin-left: 2%; */
   z-index: 2;
   position: relative;
+  top: 8px;
+  left: 5px;
+  height: 0;
 }
