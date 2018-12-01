@@ -3,8 +3,8 @@
         <div *ngFor="let media of column" class="item">
             <h2>{{ media?.date | date: 'dd.MM.yyyy' }}</h2>
             <img *ngIf="media.media_type == 'image'" [src]="media.url" [alt]="media.title" >
-            <!-- http://img.youtube.com/vi/[video-id]/[thumbnail-number].jpg -->
-            <app-video-frame  *ngIf="media.media_type == 'video'" [src]="media?.url" ></app-video-frame>
+            <img *ngIf="media.media_type == 'video'" [src]="youtubeImage(media.url)" [alt]="media.title" >
+            <!-- <app-video-frame  *ngIf="media.media_type == 'video'" [src]="media?.url" ></app-video-frame> -->
         </div>
     </div>
     <!-- <h2>{{ media.title }}</h2> -->

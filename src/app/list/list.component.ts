@@ -24,7 +24,7 @@ export class ListComponent implements OnInit {
       .subscribe((mediaList: Media[]) => {
         console.log(mediaList);
 
-        this.mediaList = mediaList;
+        this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date));
         this.generateColumns();
       });
   }
@@ -39,6 +39,16 @@ export class ListComponent implements OnInit {
         this.columns[p] = [];
       }
     }
+  }
+
+  youtubeImage(url) {
+    const regExp = /embed\/([^)]+)\?/;
+    const matches = regExp.exec(url);
+    // const matches = regExp.exec('https://www.youtube.com/embed/B1R3dTdcpSU?rel=0');
+
+    const videoId = matches[1];
+    const thumbnailNumber = 'maxresdefault.jpg';
+    return `http://img.youtube.com/vi/${videoId}/${thumbnailNumber}`;
   }
 
 
