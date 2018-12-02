@@ -25,19 +25,23 @@ export class ListComponent implements OnInit {
         console.log(mediaList);
 
         this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date));
+
         this.generateColumns();
       });
   }
 
   generateColumns() {
-    let p = 0;
+    const p = 0;
+    const columnsNumber = 3;
     this.columns[p] = [];
+
+    for (let column = 0; column < columnsNumber; column++ ) {
+      this.columns[column] = [];
+    }
+
     for (let i = 0; i < this.mediaList.length; i++ ) {
-      this.columns[p].push(this.mediaList[i]);
-      if ((i + 1) % 5 === 0 && i + 1 !== this.mediaList.length) {
-        p++;
-        this.columns[p] = [];
-      }
+      const column = ((i + 1) % columnsNumber || columnsNumber) - 1;
+      this.columns[column].push(this.mediaList[i]);
     }
   }
 
