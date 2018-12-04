@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AppService } from '../app.service';
 
 @Component({
@@ -8,6 +8,7 @@ import { AppService } from '../app.service';
 })
 export class HomeComponent implements OnInit {
   media: Media;
+  @ViewChild('imagem') imagem: ElementRef;
 
   constructor(private service: AppService) { }
 
@@ -15,7 +16,15 @@ export class HomeComponent implements OnInit {
     this.service.getMedia(/* { date: '2018-11-01' } */)
       .subscribe((media: Media) => {
         this.media = media;
-        console.log(media);
+        const image = new Image;
+        image.src = media.url;
+        image.onload = () => {
+          console.log(this.imagem);
+          this.imagem.nativeElement.src = media.url;
+          console.log('carregou');
+          console.log(this.imagem);
+
+        };
       });
   }
 

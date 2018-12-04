@@ -7,4 +7,5 @@ class Media {
     service_version: string;
     title: string;
     url: string;
+    image: any;
 }

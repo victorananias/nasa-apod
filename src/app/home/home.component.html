@@ -1,7 +1,8 @@
 <div class="container">
   <div class="item">
-    <img *ngIf="media?.media_type == 'image'" [src]="media.url" [alt]="media.title">
-    <app-video-frame *ngIf="media?.media_type == 'video'" [src]="media?.url"></app-video-frame>
+    <img #imagem>
+    <!-- <img *ngIf="media?.media_type == 'image'" [src]="media.url" [alt]="media.title"> -->
+    <!-- <app-video-frame *ngIf="media?.media_type == 'video'" [src]="media?.url"></app-video-frame> -->
   </div>
   
   <div class="item">

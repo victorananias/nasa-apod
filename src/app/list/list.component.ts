@@ -47,7 +47,24 @@ export class ListComponent implements OnInit {
       start_date: this.datePipe.transform(this.startDate, 'yyyy-MM-dd') ,
       end_date: this.datePipe.transform(this.endDate, 'yyyy-MM-dd') ,
     }).subscribe((mediaList: Media[]) => {
-        this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date));
+
+        let counter = 1;
+
+        this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date)).map((media) => {
+          const image = new Image();
+          if (media.media_type === 'video') {
+            image.src = this.youtubeImage( media.url);
+          } else {
+            image.src = media.url;
+          }
+          image.onload = () => {
+            media.image = image;
+            console.log('carregou', counter++);
+          };
+
+          return media;
+        });
+
         this.generateColumns();
     });
   }
@@ -74,7 +91,7 @@ export class ListComponent implements OnInit {
 
     const videoId = matches[1];
     const thumbnailNumber = 'maxresdefault.jpg';
-    return `http://img.youtube.com/vi/${videoId}/${thumbnailNumber}`;
+    return `https://img.youtube.com/vi/${videoId}/${thumbnailNumber}`;
   }
 
   get startDate() {
@@ -84,7 +101,7 @@ export class ListComponent implements OnInit {
   get endDate() {
     const date = new Date(this.startDate);
 
-    date.setDate(this.date.getDate() + this.itemsCount );
+    date.setDate(this.date.getDate() + this.itemsCount);
 
     return  this.datePipe.transform(
       date,
