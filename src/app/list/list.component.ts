@@ -20,6 +20,7 @@ export class ListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.resize(window.innerWidth);
     this.previous();
   }
 
@@ -91,17 +92,17 @@ export class ListComponent implements OnInit {
     );
   }
 
-  resize(event) {
+  onResize(event) {
     const windowWidth = event.target.innerWidth;
-    if (windowWidth > 1200) {
-      console.log('opa 1');
+    this.resize(windowWidth);
+  }
 
+  private resize(windowWidth) {
+    if (windowWidth > 1200) {
       this.columnsNumber = 3;
     } else if (windowWidth < 1200 && windowWidth >  700) {
-      console.log('opa 2');
       this.columnsNumber = 2;
     } else if (windowWidth <  700) {
-      console.log('opa 3');
       this.columnsNumber = 1;
     }
 
