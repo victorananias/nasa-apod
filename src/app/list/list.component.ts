@@ -34,14 +34,6 @@ export class ListComponent implements OnInit {
     this.loadPictures();
   }
 
-  private nextDate() {
-    this.date.setDate(this.date.getDate() + this.itemsCount);
-  }
-
-  private previousDate() {
-    this.date.setDate(this.date.getDate() - this.itemsCount);
-  }
-
   loadPictures() {
     this.service.getMedia({
       start_date: this.datePipe.transform(this.startDate, 'yyyy-MM-dd') ,
@@ -51,12 +43,15 @@ export class ListComponent implements OnInit {
         let counter = 1;
 
         this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date)).map((media) => {
+
           const image = new Image();
+
           if (media.media_type === 'video') {
             image.src = this.youtubeImage( media.url);
           } else {
             image.src = media.url;
           }
+
           image.onload = () => {
             media.image = image;
             console.log('carregou', counter++);
@@ -74,11 +69,11 @@ export class ListComponent implements OnInit {
     this.columns = [];
     this.columns[p] = [];
 
-    for (let column = 0; column < this.columnsNumber; column++ ) {
+    for (let column = 0; column < this.columnsNumber; column++) {
       this.columns[column] = [];
     }
 
-    for (let i = 0; i < this.mediaList.length; i++ ) {
+    for (let i = 0; i < this.mediaList.length; i++) {
       const column = ((i + 1) % this.columnsNumber || this.columnsNumber) - 1;
       this.columns[column].push(this.mediaList[i]);
     }
@@ -90,8 +85,8 @@ export class ListComponent implements OnInit {
     // const matches = regExp.exec('https://www.youtube.com/embed/B1R3dTdcpSU?rel=0');
 
     const videoId = matches[1];
-    const thumbnailNumber = 'maxresdefault.jpg';
-    return `https://img.youtube.com/vi/${videoId}/${thumbnailNumber}`;
+    const thumbnailName = 'maxresdefault.jpg';
+    return `https://img.youtube.com/vi/${videoId}/${thumbnailName}`;
   }
 
   get startDate() {
@@ -101,7 +96,7 @@ export class ListComponent implements OnInit {
   get endDate() {
     const date = new Date(this.startDate);
 
-    date.setDate(this.date.getDate() + this.itemsCount);
+    date.setDate(this.date.getDate() + this.itemsCount - 1);
 
     return  this.datePipe.transform(
       date,
@@ -109,9 +104,21 @@ export class ListComponent implements OnInit {
     );
   }
 
+  get flex () {
+    return (100 / this.columnsNumber) + '%';
+  }
+
   onResize(event) {
     const windowWidth = event.target.innerWidth;
     this.resize(windowWidth);
+  }
+
+  private nextDate() {
+    this.date.setDate(this.date.getDate() + this.itemsCount + 1);
+  }
+
+  private previousDate() {
+    this.date.setDate(this.date.getDate() - this.itemsCount + 1);
   }
 
   private resize(windowWidth) {
@@ -124,10 +131,6 @@ export class ListComponent implements OnInit {
     }
 
     this.generateColumns();
-  }
-
-  get flex () {
-    return (100 / this.columnsNumber) + '%';
   }
 
 
