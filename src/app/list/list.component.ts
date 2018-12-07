@@ -9,10 +9,10 @@ import { DatePipe } from '@angular/common';
 })
 export class ListComponent implements OnInit {
   mediaList: Media[] = [];
-  columns: Media[][] = [];
   date =  new Date();
   itemsCount = 15;
   columnsNumber = 3;
+  private _counter = 1;
 
   constructor(
     private service: AppService,
@@ -26,62 +26,24 @@ export class ListComponent implements OnInit {
 
   next() {
     this.nextDate();
-    this.loadPictures();
+    this.getMedia();
   }
 
   previous() {
     this.previousDate();
-    this.loadPictures();
+    this.getMedia();
   }
 
-  private nextDate() {
-    this.date.setDate(this.date.getDate() + this.itemsCount);
-  }
-
-  private previousDate() {
-    this.date.setDate(this.date.getDate() - this.itemsCount);
-  }
-
-  loadPictures() {
+  getMedia() {
     this.service.getMedia({
       start_date: this.datePipe.transform(this.startDate, 'yyyy-MM-dd') ,
       end_date: this.datePipe.transform(this.endDate, 'yyyy-MM-dd') ,
     }).subscribe((mediaList: Media[]) => {
 
-        let counter = 1;
+        this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date));
 
-        this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date)).map((media) => {
-          const image = new Image();
-          if (media.media_type === 'video') {
-            image.src = this.youtubeImage( media.url);
-          } else {
-            image.src = media.url;
-          }
-          image.onload = () => {
-            media.image = image;
-            console.log('carregou', counter++);
-          };
-
-          return media;
-        });
-
-        this.generateColumns();
+        this.downloadImages();
     });
-  }
-
-  generateColumns() {
-    const p = 0;
-    this.columns = [];
-    this.columns[p] = [];
-
-    for (let column = 0; column < this.columnsNumber; column++ ) {
-      this.columns[column] = [];
-    }
-
-    for (let i = 0; i < this.mediaList.length; i++ ) {
-      const column = ((i + 1) % this.columnsNumber || this.columnsNumber) - 1;
-      this.columns[column].push(this.mediaList[i]);
-    }
   }
 
   youtubeImage(url) {
@@ -90,8 +52,20 @@ export class ListComponent implements OnInit {
     // const matches = regExp.exec('https://www.youtube.com/embed/B1R3dTdcpSU?rel=0');
 
     const videoId = matches[1];
-    const thumbnailNumber = 'maxresdefault.jpg';
-    return `https://img.youtube.com/vi/${videoId}/${thumbnailNumber}`;
+    const thumbnailName = 'maxresdefault.jpg';
+    return `https://img.youtube.com/vi/${videoId}/${thumbnailName}`;
+  }
+
+  set counter(counter) {
+    if (this.counter === this.itemsCount) {
+      this.loadImages();
+    }
+
+    this._counter = counter;
+  }
+
+  get counter() {
+    return this._counter;
   }
 
   get startDate() {
@@ -101,7 +75,7 @@ export class ListComponent implements OnInit {
   get endDate() {
     const date = new Date(this.startDate);
 
-    date.setDate(this.date.getDate() + this.itemsCount);
+    date.setDate(this.date.getDate() + this.itemsCount - 1);
 
     return  this.datePipe.transform(
       date,
@@ -109,9 +83,48 @@ export class ListComponent implements OnInit {
     );
   }
 
+  get flex () {
+    return (100 / this.columnsNumber) + '%';
+  }
+
+  get columns() {
+    const columns = [];
+    for (let column = 0; column < this.columnsNumber; column++) {
+      columns[column] = [];
+    }
+
+    for (let i = 0; i < this.mediaList.length; i++) {
+      const column = ((i + 1) % this.columnsNumber || this.columnsNumber) - 1;
+      columns[column].push(this.mediaList[i]);
+    }
+
+    return columns;
+  }
+
   onResize(event) {
     const windowWidth = event.target.innerWidth;
     this.resize(windowWidth);
+  }
+
+  private loadImages() {
+    this.mediaList.map(media => {
+      if (media.media_type === 'video') {
+        media.src = this.youtubeImage( media.url);
+      } else {
+        media.src = media.url;
+      }
+      return media;
+    });
+    console.log('imagens carregadas');
+    
+  }
+
+  private nextDate() {
+    this.date.setDate(this.date.getDate() + this.itemsCount + 1);
+  }
+
+  private previousDate() {
+    this.date.setDate(this.date.getDate() - this.itemsCount + 1);
   }
 
   private resize(windowWidth) {
@@ -122,12 +135,25 @@ export class ListComponent implements OnInit {
     } else if (windowWidth <  700) {
       this.columnsNumber = 1;
     }
-
-    this.generateColumns();
   }
 
-  get flex () {
-    return (100 / this.columnsNumber) + '%';
+  private downloadImages() {
+    this.mediaList.map((media) => {
+
+      const image = new Image();
+
+      if (media.media_type === 'video') {
+        image.src = this.youtubeImage( media.url);
+      } else {
+        image.src = media.url;
+      }
+
+      image.onload = () => {
+        console.log('carregou', this.counter++);
+      };
+
+      return media;
+    });
   }
 
 
