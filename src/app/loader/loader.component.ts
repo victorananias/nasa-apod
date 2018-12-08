@@ -18,7 +18,7 @@ export class LoaderComponent implements OnInit {
   }
 
   get percentage() {
-    return `${ this.decimal.transform((100 * this.imgsDownloaded) / this.itemsCount, '1.0-0') }`;
+    return +this.decimal.transform((100 * this.imgsDownloaded) / this.itemsCount, '1.0-0');
   }
 
   get percentageClass() {
