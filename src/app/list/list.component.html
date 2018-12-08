@@ -12,3 +12,8 @@
     </div>
   </div>
 </div>
+
+
+<app-loader [itemsCount]="itemsCount" [imgsDownloaded]="imgsDownloaded" *ngIf="!imgsReady">
+  Preparing the Universe
+</app-loader>

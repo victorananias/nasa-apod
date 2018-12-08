@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-list',
@@ -12,7 +12,7 @@ export class ListComponent implements OnInit {
   date =  new Date();
   itemsCount = 15;
   columnsNumber = 3;
-  private _counter = 1;
+  private _imgsDownloaded = 0;
 
   constructor(
     private service: AppService,
@@ -56,16 +56,16 @@ export class ListComponent implements OnInit {
     return `https://img.youtube.com/vi/${videoId}/${thumbnailName}`;
   }
 
-  set counter(counter) {
-    if (this.counter === this.itemsCount) {
+  set imgsDownloaded(number) {
+    this._imgsDownloaded = number;
+
+    if (this._imgsDownloaded === this.itemsCount) {
       this.loadImages();
     }
-
-    this._counter = counter;
   }
 
-  get counter() {
-    return this._counter;
+  get imgsDownloaded() {
+    return this._imgsDownloaded;
   }
 
   get startDate() {
@@ -101,6 +101,10 @@ export class ListComponent implements OnInit {
     return columns;
   }
 
+  get imgsReady() {
+    return this.itemsCount === this.imgsDownloaded;
+  }
+
   onResize(event) {
     const windowWidth = event.target.innerWidth;
     this.resize(windowWidth);
@@ -115,8 +119,7 @@ export class ListComponent implements OnInit {
       }
       return media;
     });
-    console.log('imagens carregadas');
-    
+
   }
 
   private nextDate() {
@@ -149,7 +152,7 @@ export class ListComponent implements OnInit {
       }
 
       image.onload = () => {
-        console.log('carregou', this.counter++);
+        this.imgsDownloaded++;
       };
 
       return media;
