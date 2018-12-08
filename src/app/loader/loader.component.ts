@@ -9,6 +9,7 @@ import { DecimalPipe } from '@angular/common';
 export class LoaderComponent implements OnInit {
   @Input() itemsCount = 0;
   @Input() imgsDownloaded = 0;
+  @Input() hide = false;
 
   constructor(
     private decimal: DecimalPipe
