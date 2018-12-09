@@ -8,6 +8,7 @@
 <div class="row" (window:resize)="onResize($event)">
   <div class="column" *ngFor="let column of columns" [style.flex]="flex">
     <div *ngFor="let media of column" class="item">
+      <h2>{{ media.date | date: 'yyyy.MM.dd' }}</h2>
       <img [src]="media?.src || ''" [alt]="media.title" >
     </div>
   </div>
