@@ -8,9 +8,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { VideoFrameComponent } from './video-frame/video-frame.component';
 import { ListComponent } from './list/list.component';
 import { HeaderComponent } from './header/header.component';
-import { HomeComponent } from './home/home.component';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { LoaderComponent } from './loader/loader.component';
+import { ItemComponent } from './item/item.component';
 
 @NgModule({
   declarations: [
@@ -19,8 +19,8 @@ import { LoaderComponent } from './loader/loader.component';
     VideoFrameComponent,
     ListComponent,
     HeaderComponent,
-    HomeComponent,
-    LoaderComponent
+    LoaderComponent,
+    ItemComponent
   ],
   imports: [
     BrowserModule,

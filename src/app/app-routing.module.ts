@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ListComponent } from './list/list.component';
-import { HomeComponent } from './home/home.component';
+import { ItemComponent } from './item/item.component';
 
 const routes: Routes = [
-  { path: 'item', component: HomeComponent },
+  { path: ':date', component: ItemComponent },
   { path: '', component: ListComponent }
 ];
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list',
@@ -15,6 +16,7 @@ export class ListComponent implements OnInit {
   private _imgsDownloaded = 0;
 
   constructor(
+    private router: Router,
     private service: AppService,
     private datePipe: DatePipe
   ) { }
@@ -157,6 +159,10 @@ export class ListComponent implements OnInit {
 
       return media;
     });
+  }
+
+  selecionar(date) {
+    this.router.navigate([date]);
   }
 
 
