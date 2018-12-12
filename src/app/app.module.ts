@@ -11,6 +11,8 @@ import { HeaderComponent } from './header/header.component';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { LoaderComponent } from './loader/loader.component';
 import { ItemComponent } from './item/item.component';
+import { DotsComponent } from './loader/dots/dots.component';
+import { CircleComponent } from './loader/circle/circle.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { ItemComponent } from './item/item.component';
     ListComponent,
     HeaderComponent,
     LoaderComponent,
-    ItemComponent
+    ItemComponent,
+    DotsComponent,
+    CircleComponent
   ],
   imports: [
     BrowserModule,
