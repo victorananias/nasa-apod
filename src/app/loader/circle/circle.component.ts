@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./circle.component.css']
 })
 export class CircleComponent implements OnInit {
-  @Input() percentage = '0';
+  @Input() percentage = 0;
 
   constructor() { }
 
@@ -14,7 +14,11 @@ export class CircleComponent implements OnInit {
   }
 
   get percentageClass() {
-    return 'p' + this.percentage;
+    return `p${this.percentage}`;
+  }
+
+  get over50() {
+    return this.percentage > 50;
   }
 
 }

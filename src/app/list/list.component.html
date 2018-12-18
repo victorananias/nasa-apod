@@ -7,11 +7,15 @@
 </div> -->
 <div class="row" (window:resize)="onResize($event)">
   <div class="column" *ngFor="let column of columns" [style.flex]="flex">
-    <a *ngFor="let media of column" class="item" (click)="selecionar(media.date)">
+    <!-- <a *ngFor="let media of column" class="item" (click)="selecionar(media.date)"> -->
+    <a *ngFor="let media of column" class="item">
       <h2>{{ media.date | date: 'dd.MM.yyyy' }}</h2>
       <img [src]="media?.src || ''" [alt]="media.title" >
     </a>
   </div>
 </div>
 
-<app-loader [itemsCount]="itemsCount" [imgsDownloaded]="imgsDownloaded"  [hide]='imgsReady'></app-loader>
+<app-loader [itemsCount]="itemsCount" [imgsDownloaded]="imgsDownloaded" [hide]='imgsReady'>
+  {{ loadingMessage }}<app-dots></app-dots>
+</app-loader>
+
