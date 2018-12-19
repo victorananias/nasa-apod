@@ -42,6 +42,7 @@ export class ListComponent implements OnInit {
       start_date: this.datePipe.transform(this.startDate, 'yyyy-MM-dd') ,
       end_date: this.datePipe.transform(this.endDate, 'yyyy-MM-dd') ,
     }).subscribe((mediaList: Media[]) => {
+        console.log(mediaList);
         this.loadingMessage  = 'Getting Resources';
 
         this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date));
