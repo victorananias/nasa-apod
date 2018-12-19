@@ -48,7 +48,11 @@ export class ListComponent implements OnInit {
         this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date));
 
         this.downloadImages();
-    });
+    },
+      error => {
+        this.loadingMessage = 'Connection failed';
+      }
+    );
   }
 
   youtubeImage(url) {
