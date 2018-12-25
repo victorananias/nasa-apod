@@ -29,3 +29,7 @@ ul {
 img {
     max-width: 100%;
 }
+
+.clicavel {
+    cursor: pointer;
+}

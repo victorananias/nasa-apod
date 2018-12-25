@@ -13,14 +13,14 @@
   padding: 0 4px;
 }
 
-.item {
+.media {
   margin-top: 8px;
   width: 100%;
   vertical-align: middle;
   border-radius: 2px;
 }
 
-.item img {
+.media img {
   width: 100%;
 }
 

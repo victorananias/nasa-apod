@@ -38,7 +38,7 @@ export class ListComponent implements OnInit {
   }
 
   getMedia() {
-    this.service.getMedia({
+    this.service.getMediaList({
       start_date: this.datePipe.transform(this.startDate, 'yyyy-MM-dd') ,
       end_date: this.datePipe.transform(this.endDate, 'yyyy-MM-dd') ,
     }).subscribe((mediaList: Media[]) => {
@@ -48,7 +48,7 @@ export class ListComponent implements OnInit {
         this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date));
 
         this.downloadImages();
-    });
+    }, error => this.loadingMessage = error.msg);
   }
 
   youtubeImage(url) {
