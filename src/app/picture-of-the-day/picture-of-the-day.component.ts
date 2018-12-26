@@ -25,13 +25,13 @@ export class PictureOfTheDayComponent implements OnInit {
       if (!(this.date = params.date)) {
         this.date = this.datePipe.transform(( new Date), 'yyyy-MM-dd');
       }
-      
+
       this.getMedia();
     });
   }
 
   private getMedia() {
-    this.service.getMedia({date: this.date})
+    this.service.getMedia(this.date)
       .subscribe((media: Media) => {
         const image = new Image;
         if (media.media_type === 'video') {
@@ -41,10 +41,9 @@ export class PictureOfTheDayComponent implements OnInit {
         }
 
         image.onload = () => {
-          console.log(this.imagem);
           this.imagem.nativeElement.src = image.src;
-          console.log('carregou');
         };
+
       }, erro => this.router.navigate(['/']));
   }
 

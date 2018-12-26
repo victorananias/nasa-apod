@@ -7,8 +7,8 @@
 </div> -->
 <div class="row" (window:resize)="onResize($event)">
   <div class="column" *ngFor="let column of columns" [style.flex]="flex">
-    <!-- <a *ngFor="let media of column" class="media clicavel" (click)="selecionar(media.date)"> -->
-    <a *ngFor="let media of column" class="media">
+    <a *ngFor="let media of column" class="media clicavel" (click)="selectMedia(media)">
+    <!-- <a *ngFor="let media of column" class="media"> -->
       <h2>{{ media.date | date: 'dd.MM.yyyy' }}</h2>
       <img [src]="media?.src || ''" [alt]="media.title" >
     </a>
