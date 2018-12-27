@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,10 +10,10 @@ import { Router } from '@angular/router';
 })
 export class ListComponent implements OnInit {
   mediaList: Media[] = [];
-  date =  new Date();
+  date = new Date();
   itemsCount = 15;
   columnsNumber = 3;
-  loadingMessage = 'Connecting to Nasa';
+  loadingMessage;
   private _imgsDownloaded = 0;
 
   constructor(
@@ -29,30 +29,28 @@ export class ListComponent implements OnInit {
 
   next() {
     this.nextDate();
-    this.getMedia();
+    this.getMediaList();
   }
 
   previous() {
     this.previousDate();
-    this.getMedia();
+    this.getMediaList();
   }
 
-  getMedia() {
-    this.service.getMedia({
+  getMediaList() {
+    this.loadingMessage = 'Connecting to Nasa';
+    this._imgsDownloaded = 0;
+
+    this.service.getMediaList({
       start_date: this.datePipe.transform(this.startDate, 'yyyy-MM-dd') ,
       end_date: this.datePipe.transform(this.endDate, 'yyyy-MM-dd') ,
     }).subscribe((mediaList: Media[]) => {
-        console.log(mediaList);
-        this.loadingMessage  = 'Getting Resources';
-
         this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date));
-
         this.downloadImages();
-    },
-      error => {
-        this.loadingMessage = 'Connection failed';
-      }
-    );
+    }, error => {
+      console.error(error);
+      this.loadingMessage = 'Connection Failed.';
+    });
   }
 
   youtubeImage(url) {
@@ -78,7 +76,7 @@ export class ListComponent implements OnInit {
   }
 
   get startDate() {
-    return  this.datePipe.transform(this.date, 'yyyy-MM-dd');
+    return this.datePipe.transform(this.date, 'yyyy-MM-dd');
   }
 
   get endDate() {
@@ -150,6 +148,8 @@ export class ListComponent implements OnInit {
   }
 
   private downloadImages() {
+    this.loadingMessage  = 'Getting Resources';
+
     this.mediaList.map((media) => {
 
       const image = new Image();
@@ -168,8 +168,9 @@ export class ListComponent implements OnInit {
     });
   }
 
-  selecionar(date) {
-    this.router.navigate([date]);
+  selectMedia(media) {
+    this.service.setMedia(media);
+    this.router.navigate([media.date]);
   }
 
 

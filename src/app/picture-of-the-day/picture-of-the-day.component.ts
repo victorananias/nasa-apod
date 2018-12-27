@@ -1,30 +1,37 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AppService } from '../app.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-item',
-  templateUrl: './item.component.html',
-  styleUrls: ['./item.component.css']
+  selector: 'app-picture-of-the-day',
+  templateUrl: './picture-of-the-day.component.html',
+  styleUrls: ['./picture-of-the-day.component.css']
 })
-export class ItemComponent implements OnInit {
+export class PictureOfTheDayComponent implements OnInit {
   media: Media;
+  date;
   @ViewChild('imagem') imagem: ElementRef;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private service: AppService
+    private service: AppService,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
-      this.getMedia(params.date);
+      if (!(this.date = params.date)) {
+        this.date = this.datePipe.transform(( new Date), 'yyyy-MM-dd');
+      }
+
+      this.getMedia();
     });
   }
 
-  private getMedia(date) {
-    this.service.getMedia({date})
+  private getMedia() {
+    this.service.getMedia(this.date)
       .subscribe((media: Media) => {
         const image = new Image;
         if (media.media_type === 'video') {
@@ -34,10 +41,9 @@ export class ItemComponent implements OnInit {
         }
 
         image.onload = () => {
-          console.log(this.imagem);
           this.imagem.nativeElement.src = image.src;
-          console.log('carregou');
         };
+
       }, erro => this.router.navigate(['/']));
   }
 
@@ -50,4 +56,5 @@ export class ItemComponent implements OnInit {
     const thumbnailName = 'maxresdefault.jpg';
     return `https://img.youtube.com/vi/${videoId}/${thumbnailName}`;
   }
+
 }
