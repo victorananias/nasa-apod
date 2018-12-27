@@ -3,6 +3,7 @@ import { AppService } from '../app.service';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ImagesService } from '../images.service';
+import { Media } from '../media.model';
 
 @Component({
   selector: 'app-home',
