@@ -29,16 +29,16 @@ export class ListComponent implements OnInit {
 
   next() {
     this.nextDate();
-    this.getMedia();
+    this.getMediaList();
   }
 
   previous() {
     this.previousDate();
-    this.getMedia();
+    this.getMediaList();
   }
 
-  getMedia() {
-    this.service.getMedia({
+  getMediaList() {
+    this.service.getMediaList({
       start_date: this.datePipe.transform(this.startDate, 'yyyy-MM-dd') ,
       end_date: this.datePipe.transform(this.endDate, 'yyyy-MM-dd') ,
     }).subscribe((mediaList: Media[]) => {
@@ -168,8 +168,9 @@ export class ListComponent implements OnInit {
     });
   }
 
-  selecionar(date) {
-    this.router.navigate([date]);
+  selectMedia(media) {
+    this.service.setMedia(media);
+    this.router.navigate([media.date]);
   }
 
 
