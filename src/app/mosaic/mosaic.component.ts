@@ -1,6 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AppService } from '../app.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mosaic',
@@ -12,10 +10,7 @@ export class MosaicComponent implements OnInit {
   @Input() columnsNumber;
   @Output() itemSelected: EventEmitter<Object> = new EventEmitter<Object>();
 
-  constructor(
-    private service: AppService,
-    private router: Router
-  ) { }
+  constructor() { }
 
   ngOnInit() {
     this.resize(window.innerWidth);
