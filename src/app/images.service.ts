@@ -16,6 +16,7 @@ export class ImagesService {
       .map((media) => {
 
       media = new Media(media);
+
       const image = new Image();
 
       image.src = media.src;
