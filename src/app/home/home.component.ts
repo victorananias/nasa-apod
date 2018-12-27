@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ImagesService } from '../images.service';
+import { Media } from '../media.model';
 
 @Component({
   selector: 'app-home',
@@ -11,141 +13,118 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class HomeComponent implements OnInit {
   mediaList: Media[] = [];
   date = new Date();
-  itemsCount = 15;
+  loadingMessage = 'Starting App';
+  imgsReady = false;
+  maxItems = 15;
+
   maxColumnWidth = 400;
-  loadingMessage;
-  private _imgsDownloaded = 0;
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private datePipe: DatePipe,
     private service: AppService,
+    private imagesService: ImagesService
   ) { }
 
   ngOnInit() {
+    this.date.setHours(0);
+
+    this.imagesService.imagesLoaded.subscribe((mediaList: Media[]) => {
+      this.mediaList = mediaList;
+      this.imgsReady = true;
+    });
+
     this.activatedRoute.queryParams
       .subscribe(params => {
+        this.loadingMessage = 'Connecting to Nasa';
         if (params.date) {
           this.date = new Date(params.date);
         }
-    });
 
-    this.previous();
+        this.loadImages();
+    });
+  }
+
+  loadImages() {
+    this.imgsReady = false;
+
+    this.service.getMediaList({
+      start_date: this.startDate,
+      end_date: this.endDate
+    })
+    .subscribe((mediaList: Media[]) => {
+      this.imagesService.loadImages(mediaList);
+    });
   }
 
   next() {
     this.nextDate();
-    this.getMediaList();
+    this.loadImages();
   }
 
   previous() {
     this.previousDate();
-    this.getMediaList();
+    this.loadImages();
   }
 
-  getMediaList() {
-    this.loadingMessage = 'Connecting to Nasa';
-    this._imgsDownloaded = 0;
+  // getMediaList() {
+  //   this.loadingMessage = 'Connecting to Nasa';
+  //   this._downloadedImgs = 0;
 
-    this.service.getMediaList({
-      start_date: this.formatDate(this.startDate) ,
-      end_date: this.formatDate(this.endDate)
-    }).subscribe((mediaList: Media[]) => {
-        this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date));
-        this.downloadImages();
-    }, error => {
-      console.error(error);
-      this.loadingMessage = 'Connection Failed.';
-    });
-  }
+  //   this.service.getMediaList({
+  //     start_date: this.formatDate(this.startDate) ,
+  //     end_date: this.formatDate(this.endDate)
+  //   }).subscribe((mediaList: Media[]) => {
+  //       this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date));
+  //       this.downloadImages();
+  //   }, error => {
+  //     console.error(error);
+  //     this.loadingMessage = 'Connection Failed.';
+  //   });
+  // }
 
-  onMediaSelected(media) {
-    this.service.setMedia(media);
-    this.router.navigate(['/', media.date]);
-  }
-
-  private youtubeImage(url) {
-    const regExp = /embed\/([^)]+)\?/;
-
-    const matches = regExp.exec(url);
-    // const matches = regExp.exec('https://www.youtube.com/embed/B1R3dTdcpSU?rel=0');
-
-    const videoId = matches[1];
-    const thumbnailName = 'maxresdefault.jpg';
-    return `https://img.youtube.com/vi/${videoId}/${thumbnailName}`;
-  }
-
-  set imgsDownloaded(number) {
-    this._imgsDownloaded = number;
-
-    if (this._imgsDownloaded === this.itemsCount) {
-      this.loadImages();
-    }
-  }
-
-  get imgsDownloaded() {
-    return this._imgsDownloaded;
-  }
+  // onMediaSelected(media) {
+  //   this.service.setMedia(media);
+  //   this.router.navigate(['/', media.date]);
+  // }
 
   get startDate() {
-    return this.formatDate(this.date);
-  }
-
-  get endDate() {
-    const date = new Date(this.startDate);
-
-    date.setDate(this.date.getDate() + this.itemsCount - 1);
-
+    const date = new Date(this.formatDate(this.date));
+    date.setDate(this.date.getDate() + 1 - this.maxItems);
     return this.formatDate(date);
   }
 
-  get imgsReady() {
-    return this.itemsCount === this.imgsDownloaded;
+  get endDate() {
+    return this.formatDate(this.date);
   }
 
-  private loadImages() {
-    this.mediaList.map(media => {
-      if (media.media_type === 'video') {
-        media.src = this.youtubeImage( media.url);
-      } else {
-        media.src = media.url;
-      }
-      return media;
-    });
-
+  get downloadedImgs() {
+    return this.imagesService.downloadedImgs;
   }
+
+  // private loadImages() {
+  //   this.mediaList.map(media => {
+  //     if (media.media_type === 'video') {
+  //       media.src = this.youtubeImage( media.url);
+  //     } else {
+  //       media.src = media.url;
+  //     }
+  //     return media;
+  //   });
+
+  // }
 
   private nextDate() {
-    this.date.setDate(this.date.getDate() + this.itemsCount + 1);
+    this.date.setDate(this.date.getDate() + this.maxItems + 1);
   }
 
   private previousDate() {
-    this.date.setDate(this.date.getDate() - this.itemsCount + 1);
-  }
-
-  private downloadImages() {
-    this.loadingMessage  = 'Getting Resources';
-
-    this.mediaList.map((media) => {
-
-      const image = new Image();
-
-      if (media.media_type === 'video') {
-        image.src = this.youtubeImage( media.url);
-      } else {
-        image.src = media.url;
-      }
-
-      image.onload = () => {
-        this.imgsDownloaded++;
-      };
-
-      return media;
-    });
+    this.date.setDate(this.date.getDate() - this.maxItems + 1);
   }
 
   private formatDate(date) {
+    date.setDate(date.getDate());
     return this.datePipe.transform(
       date,
       'yyyy-MM-dd'

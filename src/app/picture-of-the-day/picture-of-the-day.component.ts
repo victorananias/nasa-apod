@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppService } from '../app.service';
 import { DatePipe } from '@angular/common';
+import { Media } from '../media.model';
 
 @Component({
   selector: 'app-picture-of-the-day',

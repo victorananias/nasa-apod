@@ -7,8 +7,8 @@ import { DecimalPipe } from '@angular/common';
   styleUrls: ['./loader.component.css']
 })
 export class LoaderComponent implements OnInit {
-  @Input() itemsCount = 0;
-  @Input() imgsDownloaded = 0;
+  @Input() maxItems;
+  @Input() downloadedImgs;
   @Input() hide = false;
 
   constructor(
@@ -19,7 +19,7 @@ export class LoaderComponent implements OnInit {
   }
 
   get percentage() {
-    return +this.decimal.transform((100 * this.imgsDownloaded) / this.itemsCount, '1.0-0');
+    return +this.decimal.transform((100 * this.downloadedImgs) / this.maxItems, '1.0-0');
   }
 
 }

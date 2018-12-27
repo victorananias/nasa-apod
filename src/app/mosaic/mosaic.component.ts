@@ -23,6 +23,10 @@ export class MosaicComponent implements OnInit {
       columns[column] = [];
     }
 
+    if (columns === []) {
+      return;
+    }
+
     for (let i = 0; i < this.list.length; i++) {
       const column = ((i + 1) % this.columnsNumber || this.columnsNumber) - 1;
       columns[column].push(this.list[i]);

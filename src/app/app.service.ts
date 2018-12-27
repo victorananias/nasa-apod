@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { Media } from './media.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AppService {
   private apiKey = environment.apiKey;
   private _media: Media;
   private _mediaList: Media[] = [];
-  private _params = {};
+  private params = {};
 
   constructor(
     private http: HttpClient,
@@ -26,17 +27,13 @@ export class AppService {
         return observer.next(this._mediaList);
       }
 
-      this.params = params;
-
       this.http.get<Media[]>(`${this.apiUrl}`, {
-        params: this.params
-      }).subscribe(
-        (response: Media[]) => {
+        params: Object.assign({ api_key: this.apiKey }, this.params = params)
+      })
+      .subscribe((response: Media[]) => {
           this._mediaList = response;
           observer.next(response);
-        },
-        (error => observer.error())
-      );
+        }, error => observer.error(error));
     });
   }
 
@@ -52,26 +49,16 @@ export class AppService {
 
       this.http.get<Media>(`${this.apiUrl}`, {
         params: { date, api_key: this.apiKey }
-      }).subscribe(
+      })
+      .subscribe(
         (response: Media) => observer.next(response),
-        (error => observer.error())
+        error => observer.error(error)
       );
     });
   }
 
-  set params(params) {
-    this._params = params;
-    this._params['api_key'] = this.apiKey;
-  }
-
-  get params() {
-    return this._params;
-  }
-
   sameParams(newParams) {
-    const currentParams = Object.assign({}, this.params);
-    delete currentParams['api_key'];
-    console.log(JSON.stringify(currentParams) === JSON.stringify(newParams));
-    return JSON.stringify(currentParams) === JSON.stringify(newParams);
+    console.log(JSON.stringify(this.params) === JSON.stringify(newParams));
+    return JSON.stringify(this.params) === JSON.stringify(newParams);
   }
 }
