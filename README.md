@@ -1,6 +1,7 @@
-# Nasa
+# Nasa - Astronomy Picture of the Day
 
-https://good9ght.github.io/angular-nasa-apod/
+* [Demo](https://good9ght.github.io/angular-nasa-apod/)
+* [github/apod-api](https://github.com/nasa/apod-api)
 
 
 ## build
