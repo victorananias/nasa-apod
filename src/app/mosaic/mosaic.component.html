@@ -1,0 +1,8 @@
+<div class="row" (window:resize)="onResize($event)">
+  <div class="column" *ngFor="let column of columns" [style.flex]="flex">
+    <a *ngFor="let item of column" class="item clicavel" (click)="onSelectItem(item)">
+      <h2>{{ item.date | date: 'dd.MM.yyyy' }}</h2>
+      <img [src]="item?.src || ''" [alt]="item.title">
+    </a>
+  </div>
+</div>

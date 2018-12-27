@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="column">
+    <button class="dark-button" (click)="previous()"><-</button>
+  </div>
+  <div class="column">
+    <button class="dark-button" (click)="next()" disabled>-></button>
+  </div>
+</div>
+
+<app-mosaic 
+  [list]="mediaList"
+  [columnsNumber]="columnsNumber"
+  (itemSelected)="onMediaSelected($event)"
+></app-mosaic>
+
+<app-loader [itemsCount]="itemsCount" [imgsDownloaded]="imgsDownloaded" [hide]='imgsReady'>
+  {{ loadingMessage }}<app-dots></app-dots>
+</app-loader>
+

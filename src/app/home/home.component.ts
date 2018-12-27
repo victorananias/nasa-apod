@@ -4,11 +4,11 @@ import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
-export class ListComponent implements OnInit {
+export class HomeComponent implements OnInit {
   mediaList: Media[] = [];
   date = new Date();
   itemsCount = 15;
@@ -31,7 +31,6 @@ export class ListComponent implements OnInit {
         }
     });
 
-    this.resize(window.innerWidth);
     this.previous();
   }
 
@@ -61,7 +60,12 @@ export class ListComponent implements OnInit {
     });
   }
 
-  youtubeImage(url) {
+  onMediaSelected(media) {
+    this.service.setMedia(media);
+    this.router.navigate(['/', media.date]);
+  }
+
+  private youtubeImage(url) {
     const regExp = /embed\/([^)]+)\?/;
 
     const matches = regExp.exec(url);
@@ -96,36 +100,8 @@ export class ListComponent implements OnInit {
     return this.formatDate(date);
   }
 
-  get flex () {
-    return (100 / this.columnsNumber) + '%';
-  }
-
-  get columns() {
-    const columns = [];
-    for (let column = 0; column < this.columnsNumber; column++) {
-      columns[column] = [];
-    }
-
-    for (let i = 0; i < this.mediaList.length; i++) {
-      const column = ((i + 1) % this.columnsNumber || this.columnsNumber) - 1;
-      columns[column].push(this.mediaList[i]);
-    }
-
-    return columns;
-  }
-
   get imgsReady() {
     return this.itemsCount === this.imgsDownloaded;
-  }
-
-  onResize(event) {
-    const windowWidth = event.target.innerWidth;
-    this.resize(windowWidth);
-  }
-
-  selectMedia(media) {
-    this.service.setMedia(media);
-    this.router.navigate([media.date]);
   }
 
   private loadImages() {
@@ -146,16 +122,6 @@ export class ListComponent implements OnInit {
 
   private previousDate() {
     this.date.setDate(this.date.getDate() - this.itemsCount + 1);
-  }
-
-  private resize(windowWidth) {
-    if (windowWidth > 1200) {
-      this.columnsNumber = 3;
-    } else if (windowWidth < 1200 && windowWidth >  700) {
-      this.columnsNumber = 2;
-    } else if (windowWidth <  700) {
-      this.columnsNumber = 1;
-    }
   }
 
   private downloadImages() {
