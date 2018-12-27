@@ -8,16 +8,9 @@ export class Media {
   title: string;
   url: string;
 
-  constructor(media = null) {
+  constructor(media = {}) {
     if (media) {
-      this.copyright = media.copyright || null;
-      this.date = media.date || null;
-      this.explanation = media.explanation || null;
-      this.hdurl = media.hdurl || null;
-      this.media_type = media.media_type || null;
-      this.service_version = media.service_version || null;
-      this.title = media.title || null;
-      this.url = media.url || null;
+      Object.assign(this, media);
     }
   }
 
@@ -27,7 +20,6 @@ export class Media {
     }
 
     const regExp = /embed\/([^)]+)\?/;
-
     const matches = regExp.exec(this.url);
     // const matches = regExp.exec('https://www.youtube.com/embed/B1R3dTdcpSU?rel=0');
 
