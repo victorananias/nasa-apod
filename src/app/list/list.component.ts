@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-list',
@@ -18,11 +18,19 @@ export class ListComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private datePipe: DatePipe,
     private service: AppService,
-    private datePipe: DatePipe
   ) { }
 
   ngOnInit() {
+    this.activatedRoute.queryParams
+      .subscribe(params => {
+        if (params.date) {
+          this.date = new Date(params.date);
+        }
+    });
+
     this.resize(window.innerWidth);
     this.previous();
   }
@@ -42,8 +50,8 @@ export class ListComponent implements OnInit {
     this._imgsDownloaded = 0;
 
     this.service.getMediaList({
-      start_date: this.datePipe.transform(this.startDate, 'yyyy-MM-dd') ,
-      end_date: this.datePipe.transform(this.endDate, 'yyyy-MM-dd') ,
+      start_date: this.formatDate(this.startDate) ,
+      end_date: this.formatDate(this.endDate)
     }).subscribe((mediaList: Media[]) => {
         this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date));
         this.downloadImages();
@@ -55,6 +63,7 @@ export class ListComponent implements OnInit {
 
   youtubeImage(url) {
     const regExp = /embed\/([^)]+)\?/;
+
     const matches = regExp.exec(url);
     // const matches = regExp.exec('https://www.youtube.com/embed/B1R3dTdcpSU?rel=0');
 
@@ -76,7 +85,7 @@ export class ListComponent implements OnInit {
   }
 
   get startDate() {
-    return this.datePipe.transform(this.date, 'yyyy-MM-dd');
+    return this.formatDate(this.date);
   }
 
   get endDate() {
@@ -84,10 +93,7 @@ export class ListComponent implements OnInit {
 
     date.setDate(this.date.getDate() + this.itemsCount - 1);
 
-    return  this.datePipe.transform(
-      date,
-      'yyyy-MM-dd'
-    );
+    return this.formatDate(date);
   }
 
   get flex () {
@@ -115,6 +121,11 @@ export class ListComponent implements OnInit {
   onResize(event) {
     const windowWidth = event.target.innerWidth;
     this.resize(windowWidth);
+  }
+
+  selectMedia(media) {
+    this.service.setMedia(media);
+    this.router.navigate([media.date]);
   }
 
   private loadImages() {
@@ -168,10 +179,10 @@ export class ListComponent implements OnInit {
     });
   }
 
-  selectMedia(media) {
-    this.service.setMedia(media);
-    this.router.navigate([media.date]);
+  private formatDate(date) {
+    return this.datePipe.transform(
+      date,
+      'yyyy-MM-dd'
+    );
   }
-
-
 }
