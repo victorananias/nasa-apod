@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   mediaList: Media[] = [];
   date = new Date();
   itemsCount = 15;
-  columnsNumber = 3;
+  maxColumnWidth = 400;
   loadingMessage;
   private _imgsDownloaded = 0;
 

@@ -7,8 +7,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class MosaicComponent implements OnInit {
   @Input() list = [];
-  @Input() columnsNumber;
+  @Input() maxColumnWidth;
   @Output() itemSelected: EventEmitter<Object> = new EventEmitter<Object>();
+  private columnsNumber = 3;
 
   constructor() { }
 
@@ -44,13 +45,7 @@ export class MosaicComponent implements OnInit {
   }
 
   private resize(windowWidth) {
-    if (windowWidth > 1200) {
-      this.columnsNumber = 3;
-    } else if (windowWidth < 1200 && windowWidth >  700) {
-      this.columnsNumber = 2;
-    } else if (windowWidth <  700) {
-      this.columnsNumber = 1;
-    }
+    this.columnsNumber = Math.round(windowWidth / this.maxColumnWidth);
   }
 
 }
