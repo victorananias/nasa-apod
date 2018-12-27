@@ -1,10 +1,10 @@
-<!-- <div class="row">
+<div class="row">
   <div class="column">
     <button (click)="previous()"><-</button>
     <br>
     <button (click)="next()">-></button>
   </div>
-</div> -->
+</div>
 <div class="row" (window:resize)="onResize($event)">
   <div class="column" *ngFor="let column of columns" [style.flex]="flex">
     <a *ngFor="let media of column" class="media clicavel" (click)="selectMedia(media)">
