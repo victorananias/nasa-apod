@@ -16,7 +16,6 @@ export class HomeComponent implements OnInit {
   loadingMessage = 'Starting App';
   imgsReady = false;
   maxItems = 15;
-
   maxColumnWidth = 400;
 
   constructor(
