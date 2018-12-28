@@ -1,5 +1,7 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Media } from './media.model';
+import { PercentageLoaderService } from './shared/percentage-loader/percentage-loader.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,40 +9,32 @@ import { Media } from './media.model';
 export class ImagesService {
 
   @Output() imagesLoaded: EventEmitter<Media[]> = new EventEmitter<Media[]>();
-  private mediaList;
-  _downloadedImgs = 0;
+  private mediaList = [];
 
-  constructor() { }
+  constructor(
+    private percentageLoaderService: PercentageLoaderService
+  ) { }
 
   loadImages(mediaList: Media[]) {
-    this.downloadedImgs = 0;
+
     this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date))
       .map((media) => {
 
-      media = new Media(media);
+        media = new Media(media);
 
-      const image = new Image();
+        const image = new Image();
 
-      image.src = media.src;
+        image.src = media.src;
 
-      image.onload = () => {
-        this.downloadedImgs++;
-      };
+        image.onload = () => {
+          this.percentageLoaderService.loadedItems++;
+          if (this.percentageLoaderService.totalItems === this.percentageLoaderService.loadedItems) {
+            this.imagesLoaded.emit(this.mediaList);
+          }
+        };
 
-      return media;
-    });
-  }
-
-  set downloadedImgs(number) {
-    this._downloadedImgs = number;
-
-    if (this._downloadedImgs === this.mediaList.length) {
-      this.imagesLoaded.emit(this.mediaList);
-    }
-  }
-
-  get downloadedImgs() {
-    return this._downloadedImgs;
+        return media;
+      });
   }
 
 }

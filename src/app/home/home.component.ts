@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ImagesService } from '../images.service';
 import { Media } from '../media.model';
+import { PercentageLoaderService } from '../shared/percentage-loader/percentage-loader.service';
 
 @Component({
   selector: 'app-home',
@@ -13,30 +14,32 @@ import { Media } from '../media.model';
 export class HomeComponent implements OnInit {
   mediaList: Media[] = [];
   date = new Date();
-  loadingMessage = 'Starting App';
-  imgsReady = false;
-  maxItems = 15;
+  totalItems = 15;
   maxColumnWidth = 400;
+  loadingMessage = 'Starting App';
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private datePipe: DatePipe,
     private service: AppService,
-    private imagesService: ImagesService
+    private imagesService: ImagesService,
+    private loaderService: PercentageLoaderService
   ) { }
 
   ngOnInit() {
     this.date.setHours(0);
 
     this.imagesService.imagesLoaded.subscribe((mediaList: Media[]) => {
+      console.log('imagesLoaded event');
       this.mediaList = mediaList;
-      this.imgsReady = true;
     });
 
     this.activatedRoute.queryParams
       .subscribe(params => {
+
         this.loadingMessage = 'Connecting to Nasa';
+
         if (params.date) {
           this.date = new Date(params.date);
         }
@@ -46,7 +49,9 @@ export class HomeComponent implements OnInit {
   }
 
   loadImages() {
-    this.imgsReady = false;
+    this.loaderService.totalItems = this.totalItems;
+
+    this.loaderService.show();
 
     this.service.getMediaList({
       start_date: this.startDate,
@@ -54,12 +59,10 @@ export class HomeComponent implements OnInit {
     })
     .subscribe((mediaList: Media[]) => {
       this.imagesService.loadImages(mediaList);
+    }, error => {
+      console.error(error);
+      this.loadingMessage = 'Connection Failed';
     });
-  }
-
-  next() {
-    this.nextDate();
-    this.loadImages();
   }
 
   previous() {
@@ -67,30 +70,19 @@ export class HomeComponent implements OnInit {
     this.loadImages();
   }
 
-  // getMediaList() {
-  //   this.loadingMessage = 'Connecting to Nasa';
-  //   this._downloadedImgs = 0;
+  next() {
+    this.nextDate();
+    this.loadImages();
+  }
 
-  //   this.service.getMediaList({
-  //     start_date: this.formatDate(this.startDate) ,
-  //     end_date: this.formatDate(this.endDate)
-  //   }).subscribe((mediaList: Media[]) => {
-  //       this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date));
-  //       this.downloadImages();
-  //   }, error => {
-  //     console.error(error);
-  //     this.loadingMessage = 'Connection Failed.';
-  //   });
-  // }
-
-  // onMediaSelected(media) {
-  //   this.service.setMedia(media);
-  //   this.router.navigate(['/', media.date]);
-  // }
+  onMediaSelected(media) {
+    this.service.setMedia(media);
+    this.router.navigate(['/', media.date]);
+  }
 
   get startDate() {
     const date = new Date(this.formatDate(this.date));
-    date.setDate(this.date.getDate() + 1 - this.maxItems);
+    date.setDate(this.date.getDate() + 1 - this.totalItems);
     return this.formatDate(date);
   }
 
@@ -98,28 +90,12 @@ export class HomeComponent implements OnInit {
     return this.formatDate(this.date);
   }
 
-  get downloadedImgs() {
-    return this.imagesService.downloadedImgs;
-  }
-
-  // private loadImages() {
-  //   this.mediaList.map(media => {
-  //     if (media.media_type === 'video') {
-  //       media.src = this.youtubeImage( media.url);
-  //     } else {
-  //       media.src = media.url;
-  //     }
-  //     return media;
-  //   });
-
-  // }
-
   private nextDate() {
-    this.date.setDate(this.date.getDate() + this.maxItems + 1);
+    this.date.setDate(this.date.getDate() + this.totalItems + 1);
   }
 
   private previousDate() {
-    this.date.setDate(this.date.getDate() - this.maxItems + 1);
+    this.date.setDate(this.date.getDate() - this.totalItems + 1);
   }
 
   private formatDate(date) {

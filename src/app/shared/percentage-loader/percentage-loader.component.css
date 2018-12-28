@@ -4,14 +4,15 @@
     position: fixed; 
     height: 100%; 
     z-index: 2; 
-    left:0; 
-    top:0;
-    transition:visibility 0s linear 0.5s,opacity 0.5s linear;
+    left: 0; 
+    top: 0;
+    transition: visibility 0s linear 0.5s, opacity 0.5s linear;
 }
 
 .hidden {
-    visibility:hidden;
+    visibility: hidden;
     opacity: 0;
+    transition: visibility 0s linear 0.5s, opacity 0.5s linear;
 }
 
 .circle {

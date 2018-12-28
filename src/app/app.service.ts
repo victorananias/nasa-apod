@@ -58,7 +58,7 @@ export class AppService {
   }
 
   sameParams(newParams) {
-    console.log(JSON.stringify(this.params) === JSON.stringify(newParams));
+    console.log('same media', JSON.stringify(this.params) !== JSON.stringify(newParams));
     return JSON.stringify(this.params) === JSON.stringify(newParams);
   }
 }

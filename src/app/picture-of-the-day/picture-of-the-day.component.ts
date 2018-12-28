@@ -24,7 +24,7 @@ export class PictureOfTheDayComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       if (!(this.date = params.date)) {
-        this.date = this.datePipe.transform(( new Date), 'yyyy-MM-dd');
+        this.date = this.datePipe.transform((new Date), 'yyyy-MM-dd');
       }
 
       this.getMedia();
@@ -34,12 +34,11 @@ export class PictureOfTheDayComponent implements OnInit {
   private getMedia() {
     this.service.getMedia(this.date)
       .subscribe((media: Media) => {
+        media = new Media(media);
+
         const image = new Image;
-        if (media.media_type === 'video') {
-          image.src = this.youtubeImage( media.url);
-        } else {
-          image.src = media.url;
-        }
+
+        image.src = media.src;
 
         image.onload = () => {
           this.imagem.nativeElement.src = image.src;
@@ -47,15 +46,4 @@ export class PictureOfTheDayComponent implements OnInit {
 
       }, erro => this.router.navigate(['/']));
   }
-
-  youtubeImage(url) {
-    const regExp = /embed\/([^)]+)\?/;
-    const matches = regExp.exec(url);
-    // const matches = regExp.exec('https://www.youtube.com/embed/B1R3dTdcpSU?rel=0');
-
-    const videoId = matches[1];
-    const thumbnailName = 'maxresdefault.jpg';
-    return `https://img.youtube.com/vi/${videoId}/${thumbnailName}`;
-  }
-
 }

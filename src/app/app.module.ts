@@ -7,21 +7,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { VideoFrameComponent } from './video-frame/video-frame.component';
 import { HeaderComponent } from './header/header.component';
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { LoaderComponent } from './loader/loader.component';
-import { DotsComponent } from './loader/dots/dots.component';
-import { CircleComponent } from './loader/circle/circle.component';
 import { PictureOfTheDayComponent } from './picture-of-the-day/picture-of-the-day.component';
 import { MosaicComponent } from './mosaic/mosaic.component';
 import { HomeComponent } from './home/home.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     VideoFrameComponent,
     HeaderComponent,
-    LoaderComponent,
-    DotsComponent,
-    CircleComponent,
     PictureOfTheDayComponent,
     MosaicComponent,
     HomeComponent
@@ -29,7 +24,8 @@ import { HomeComponent } from './home/home.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    SharedModule
   ],
   providers: [DatePipe, DecimalPipe],
   bootstrap: [AppComponent]

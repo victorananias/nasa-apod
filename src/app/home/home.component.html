@@ -13,7 +13,7 @@
   (itemSelected)="onMediaSelected($event)"
 ></app-mosaic>
 
-<app-loader [maxItems]="maxItems" [downloadedImgs]="downloadedImgs" [hide]='imgsReady'>
+<app-percentage-loader>
   {{ loadingMessage }}<app-dots></app-dots>
-</app-loader>
+</app-percentage-loader>
 
