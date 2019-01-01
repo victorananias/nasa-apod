@@ -28,8 +28,6 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.date.setHours(0);
-
     this.imagesService.imagesLoaded.subscribe((mediaList: Media[]) => {
       console.log('imagesLoaded event');
       this.mediaList = mediaList;
@@ -37,18 +35,18 @@ export class HomeComponent implements OnInit {
 
     this.activatedRoute.queryParams
       .subscribe(params => {
-
-        this.loadingMessage = 'Connecting to Nasa';
-
         if (params.date) {
           this.date = new Date(params.date);
         }
+
 
         this.loadImages();
     });
   }
 
   loadImages() {
+    this.loadingMessage = 'Connecting to Nasa';
+
     this.loaderService.totalItems = this.totalItems;
 
     this.loaderService.show();
@@ -81,12 +79,15 @@ export class HomeComponent implements OnInit {
   }
 
   get startDate() {
-    const date = new Date(this.formatDate(this.date));
-    date.setDate(this.date.getDate() + 1 - this.totalItems);
+    const date = new Date(this.endDate);
+    console.log(date.getDate() + 1);
+    
+    date.setDate(17);
     return this.formatDate(date);
   }
 
   get endDate() {
+    this.date.setHours(0);
     return this.formatDate(this.date);
   }
 
