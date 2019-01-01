@@ -14,13 +14,11 @@ export class PercentageLoaderService {
   ) {}
 
   show() {
-    console.log('show');
     this.resetPercentage();
     this.loaderSubject.next(true);
   }
 
   hide() {
-    console.log('hide');
     this.loaderSubject.next(false);
   }
 
@@ -29,7 +27,6 @@ export class PercentageLoaderService {
   }
 
   set loadedItems(number) {
-    console.log(number);
     this._loadedItems = number;
 
     if (+this.loadedItems === +this.totalItems) {

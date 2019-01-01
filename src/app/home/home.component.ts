@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
-import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ImagesService } from '../images.service';
 import { Media } from '../media.model';
 import { PercentageLoaderService } from '../shared/percentage-loader/percentage-loader.service';
+import { format, subDays, addDays, differenceInCalendarDays } from 'date-fns';
 
 @Component({
   selector: 'app-home',
@@ -13,15 +13,14 @@ import { PercentageLoaderService } from '../shared/percentage-loader/percentage-
 })
 export class HomeComponent implements OnInit {
   mediaList: Media[] = [];
-  date = new Date();
-  totalItems = 15;
+  date: Date;
   maxColumnWidth = 400;
   loadingMessage = 'Starting App';
+  private _totalItems = 15;
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private datePipe: DatePipe,
     private service: AppService,
     private imagesService: ImagesService,
     private loaderService: PercentageLoaderService
@@ -29,22 +28,24 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.imagesService.imagesLoaded.subscribe((mediaList: Media[]) => {
-      console.log('imagesLoaded event');
       this.mediaList = mediaList;
     });
 
     this.activatedRoute.queryParams
       .subscribe(params => {
-        if (params.date) {
-          this.date = new Date(params.date);
+        if (!params.date) {
+          this.navigateToDate(new Date);
         }
 
+        this.date = new Date(params.date);
 
         this.loadImages();
     });
   }
 
   loadImages() {
+    this.checkDate();
+
     this.loadingMessage = 'Connecting to Nasa';
 
     this.loaderService.totalItems = this.totalItems;
@@ -64,13 +65,13 @@ export class HomeComponent implements OnInit {
   }
 
   previous() {
-    this.previousDate();
-    this.loadImages();
+    this.date = subDays(this.date, 15);
+    this.navigateToDate(this.date);
   }
 
   next() {
-    this.nextDate();
-    this.loadImages();
+    this.date = addDays(this.date, 15);
+    this.navigateToDate(this.date);
   }
 
   onMediaSelected(media) {
@@ -79,31 +80,25 @@ export class HomeComponent implements OnInit {
   }
 
   get startDate() {
-    const date = new Date(this.endDate);
-    console.log(date.getDate() + 1);
-    
-    date.setDate(17);
-    return this.formatDate(date);
+    const date = subDays(this.date, this.totalItems);
+    return format(date, 'YYYY-MM-DD');
   }
 
   get endDate() {
-    this.date.setHours(0);
-    return this.formatDate(this.date);
+    return format(this.date, 'YYYY-MM-DD');
   }
 
-  private nextDate() {
-    this.date.setDate(this.date.getDate() + this.totalItems + 1);
+  get totalItems() {
+    return this._totalItems - 1;
   }
 
-  private previousDate() {
-    this.date.setDate(this.date.getDate() - this.totalItems + 1);
+  private checkDate() {
+    if (this.date && differenceInCalendarDays(new Date, addDays(this.date, 15)) <= 0) {
+      this.navigateToDate(new Date);
+    }
   }
 
-  private formatDate(date) {
-    date.setDate(date.getDate());
-    return this.datePipe.transform(
-      date,
-      'yyyy-MM-dd'
-    );
+  private navigateToDate(date: Date) {
+    this.router.navigate(['/'], { queryParams: { date: format(date, 'YYYY-MM-DD') } });
   }
 }

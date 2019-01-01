@@ -47,6 +47,11 @@ img {
     cursor: pointer;
 }
 
+.danger-button {
+    background-color: red !important;
+    color: white !important;
+}
+
 .dark-button {
   outline: 0;
   padding: 5px 12px;
