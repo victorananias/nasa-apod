@@ -44,7 +44,9 @@ export class HomeComponent implements OnInit {
   }
 
   loadImages() {
-    this.checkDate();
+    if (this.invalidDate()) {
+      return;
+    }
 
     this.loadingMessage = 'Connecting to Nasa';
 
@@ -92,10 +94,13 @@ export class HomeComponent implements OnInit {
     return this._totalItems;
   }
 
-  private checkDate() {
+  private invalidDate() {
     if (this.date && differenceInCalendarDays(new Date, addDays(this.date, 15)) <= 0) {
       this.navigateToDate(new Date);
+      return;
     }
+    
+    return true;
   }
 
   private navigateToDate(date: Date) {
