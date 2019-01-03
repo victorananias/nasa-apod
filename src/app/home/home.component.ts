@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ImagesService } from '../images.service';
 import { Media } from '../media.model';
 import { PercentageLoaderService } from '../shared/percentage-loader/percentage-loader.service';
-import { format, subDays, addDays, differenceInCalendarDays } from 'date-fns';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +13,7 @@ import { format, subDays, addDays, differenceInCalendarDays } from 'date-fns';
 })
 export class HomeComponent implements OnInit {
   mediaList: Media[] = [];
-  date: Date;
+  endDate;
   maxColumnWidth = 400;
   loadingMessage = 'Starting App';
   private _totalItems = 15;
@@ -34,10 +34,10 @@ export class HomeComponent implements OnInit {
     this.activatedRoute.queryParams
       .subscribe(params => {
         if (!params.date) {
-          this.navigateToDate(new Date);
+          this.navigateToDate();
         }
 
-        this.date = new Date(params.date);
+        this.endDate = params.date;
 
         this.loadImages();
     });
@@ -67,13 +67,14 @@ export class HomeComponent implements OnInit {
   }
 
   previous() {
-    this.date = subDays(this.date, this.totalItems);
-    this.navigateToDate(this.date);
+    this.navigateToDate(moment(this.endDate).subtract(this.totalItems, 'days').format('YYYY-MM-DD'));
   }
 
   next() {
-    this.date = addDays(this.date, this.totalItems);
-    this.navigateToDate(this.date);
+    if (moment(this.endDate).add(this.totalItems, 'days').diff(moment(), 'days') > 0) {
+      return;
+    }
+    this.navigateToDate(moment(this.endDate).add(this.totalItems, 'days').format('YYYY-MM-DD'));
   }
 
   onMediaSelected(media) {
@@ -82,12 +83,9 @@ export class HomeComponent implements OnInit {
   }
 
   get startDate() {
-    const date = subDays(this.date, this.totalItems - 1);
-    return format(date, 'YYYY-MM-DD');
-  }
-
-  get endDate() {
-    return format(this.date, 'YYYY-MM-DD');
+    return moment(this.endDate)
+      .subtract(this.totalItems - 1, 'days')
+      .format('YYYY-MM-DD');
   }
 
   get totalItems() {
@@ -95,15 +93,15 @@ export class HomeComponent implements OnInit {
   }
 
   private invalidDate() {
-    if (this.date && differenceInCalendarDays(new Date, addDays(this.date, 15)) <= 0) {
-      this.navigateToDate(new Date);
+    if (this.endDate && moment().diff(Object.assign({}, this.endDate), 'days') <= 0) {
+      this.navigateToDate(this.endDate);
       return;
     }
-    
+
     return true;
   }
 
-  private navigateToDate(date: Date) {
-    this.router.navigate(['/'], { queryParams: { date: format(date, 'YYYY-MM-DD') } });
+  private navigateToDate(date: string = moment().format('YYYY-MM-DD')) {
+    this.router.navigate(['/'], { queryParams: { date } });
   }
 }
