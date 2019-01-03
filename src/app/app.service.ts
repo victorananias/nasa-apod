@@ -5,8 +5,6 @@ import { Observable } from 'rxjs';
 import { Media } from './media.model';
 import { format } from 'date-fns';
 
-
-
 @Injectable({
   providedIn: 'root'
 })

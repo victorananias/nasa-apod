@@ -65,12 +65,12 @@ export class HomeComponent implements OnInit {
   }
 
   previous() {
-    this.date = subDays(this.date, 15);
+    this.date = subDays(this.date, this.totalItems);
     this.navigateToDate(this.date);
   }
 
   next() {
-    this.date = addDays(this.date, 15);
+    this.date = addDays(this.date, this.totalItems);
     this.navigateToDate(this.date);
   }
 
@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit {
   }
 
   get startDate() {
-    const date = subDays(this.date, this.totalItems);
+    const date = subDays(this.date, this.totalItems - 1);
     return format(date, 'YYYY-MM-DD');
   }
 
@@ -89,7 +89,7 @@ export class HomeComponent implements OnInit {
   }
 
   get totalItems() {
-    return this._totalItems - 1;
+    return this._totalItems;
   }
 
   private checkDate() {
