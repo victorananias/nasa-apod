@@ -18,7 +18,6 @@ export class PercentageLoaderComponent implements OnInit, OnDestroy {
   ) {
     this.subscription = this.service.loaderState
       .subscribe((state: boolean) => {
-        console.log('state', state);
         this.isActive = state;
       }, error => console.error(error));
   }

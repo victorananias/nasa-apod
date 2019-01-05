@@ -4,8 +4,8 @@ import { PictureOfTheDayComponent } from './picture-of-the-day/picture-of-the-da
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
+  { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: ':date', component: PictureOfTheDayComponent },
-  { path: '', component: HomeComponent }
 ];
 
 @NgModule({

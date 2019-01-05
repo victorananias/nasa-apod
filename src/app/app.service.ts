@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
-import { DatePipe } from '@angular/common';
 import { Media } from './media.model';
+import { format } from 'date-fns';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,7 @@ export class AppService {
   private params = {};
 
   constructor(
-    private http: HttpClient,
-    private datePipe: DatePipe
+    private http: HttpClient
   ) {}
 
   getMediaList(params = {}): Observable<Media[]> {
@@ -27,8 +26,10 @@ export class AppService {
         return observer.next(this._mediaList);
       }
 
+      this.params = params;
+
       this.http.get<Media[]>(`${this.apiUrl}`, {
-        params: Object.assign({ api_key: this.apiKey }, this.params = params)
+        params: Object.assign({ api_key: this.apiKey }, params)
       })
       .subscribe((response: Media[]) => {
           this._mediaList = response;
@@ -41,9 +42,9 @@ export class AppService {
     this._media = media;
   }
 
-  getMedia(date = this.datePipe.transform(new Date, 'yyyy-MM-dd')): Observable<Media> {
+  getMedia(date = format(new Date, 'YYYY-MM-DD')): Observable<Media> {
     return new Observable<Media>(observer => {
-      if (this._media) {
+      if (this._media && this._media.date === date) {
         observer.next(this._media);
       }
 
@@ -58,7 +59,6 @@ export class AppService {
   }
 
   sameParams(newParams) {
-    console.log('same media', JSON.stringify(this.params) !== JSON.stringify(newParams));
     return JSON.stringify(this.params) === JSON.stringify(newParams);
   }
 }
