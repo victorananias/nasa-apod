@@ -3,7 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Media } from './media.model';
+<<<<<<< HEAD
 import { format } from 'date-fns';
+=======
+import * as moment from 'moment';
+>>>>>>> b0dd32eb996f4679c0a522963ab0611f597b3742
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +46,7 @@ export class AppService {
     this._media = media;
   }
 
-  getMedia(date = format(new Date, 'YYYY-MM-DD')): Observable<Media> {
+  getMedia(date = moment().format('YYYY-MM-DD')): Observable<Media> {
     return new Observable<Media>(observer => {
       if (this._media && this._media.date === date) {
         observer.next(this._media);
