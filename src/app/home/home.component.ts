@@ -4,11 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ImagesService } from '../images.service';
 import { Media } from '../media.model';
 import { PercentageLoaderService } from '../shared/percentage-loader/percentage-loader.service';
-<<<<<<< HEAD
-import { format, subDays, addDays, differenceInCalendarDays } from 'date-fns';
-=======
 import * as moment from 'moment';
->>>>>>> b0dd32eb996f4679c0a522963ab0611f597b3742
 
 @Component({
   selector: 'app-home',
@@ -17,11 +13,7 @@ import * as moment from 'moment';
 })
 export class HomeComponent implements OnInit {
   mediaList: Media[] = [];
-<<<<<<< HEAD
-  date: Date;
-=======
   endDate;
->>>>>>> b0dd32eb996f4679c0a522963ab0611f597b3742
   maxColumnWidth = 400;
   loadingMessage = 'Starting App';
   private _totalItems = 15;
@@ -42,30 +34,19 @@ export class HomeComponent implements OnInit {
     this.activatedRoute.queryParams
       .subscribe(params => {
         if (!params.date) {
-<<<<<<< HEAD
-          this.navigateToDate(new Date);
-        }
-
-        this.date = new Date(params.date);
-=======
           this.navigateToDate();
         }
 
         this.endDate = params.date;
->>>>>>> b0dd32eb996f4679c0a522963ab0611f597b3742
 
         this.loadImages();
     });
   }
 
   loadImages() {
-<<<<<<< HEAD
-    this.checkDate();
-=======
     if (this.invalidDate()) {
       return;
     }
->>>>>>> b0dd32eb996f4679c0a522963ab0611f597b3742
 
     this.loadingMessage = 'Connecting to Nasa';
 
@@ -102,28 +83,6 @@ export class HomeComponent implements OnInit {
   }
 
   get startDate() {
-<<<<<<< HEAD
-    const date = subDays(this.date, this.totalItems);
-    return format(date, 'YYYY-MM-DD');
-  }
-
-  get endDate() {
-    return format(this.date, 'YYYY-MM-DD');
-  }
-
-  get totalItems() {
-    return this._totalItems - 1;
-  }
-
-  private checkDate() {
-    if (this.date && differenceInCalendarDays(new Date, addDays(this.date, 15)) <= 0) {
-      this.navigateToDate(new Date);
-    }
-  }
-
-  private navigateToDate(date: Date) {
-    this.router.navigate(['/'], { queryParams: { date: format(date, 'YYYY-MM-DD') } });
-=======
     return moment(this.endDate)
       .subtract(this.totalItems - 1, 'days')
       .format('YYYY-MM-DD');
@@ -144,6 +103,5 @@ export class HomeComponent implements OnInit {
 
   private navigateToDate(date: string = moment().format('YYYY-MM-DD')) {
     this.router.navigate(['/'], { queryParams: { date } });
->>>>>>> b0dd32eb996f4679c0a522963ab0611f597b3742
   }
 }

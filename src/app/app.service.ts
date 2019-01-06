@@ -3,11 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Media } from './media.model';
-<<<<<<< HEAD
-import { format } from 'date-fns';
-=======
 import * as moment from 'moment';
->>>>>>> b0dd32eb996f4679c0a522963ab0611f597b3742
 
 @Injectable({
   providedIn: 'root'
