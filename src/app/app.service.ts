@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Media } from './media.model';
-import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -28,12 +27,12 @@ export class AppService {
 
       this.params = params;
 
-      this.http.get<Media[]>(`${this.apiUrl}`, {
+      this.http.get<Object[]>(`${this.apiUrl}`, {
         params: Object.assign({ api_key: this.apiKey }, params)
       })
-      .subscribe((response: Media[]) => {
-          this._mediaList = response;
-          observer.next(response);
+      .subscribe((response: any) => {
+          this._mediaList = response.sort((a, b) => b.date.localeCompare(a.date)).map(media => new Media(media));
+          observer.next(this._mediaList);
         }, error => observer.error(error));
     });
   }
@@ -42,7 +41,7 @@ export class AppService {
     this._media = media;
   }
 
-  getMedia(date = moment().format('YYYY-MM-DD')): Observable<Media> {
+  getMedia(date): Observable<Media> {
     return new Observable<Media>(observer => {
       if (this._media && this._media.date === date) {
         observer.next(this._media);
@@ -52,7 +51,7 @@ export class AppService {
         params: { date, api_key: this.apiKey }
       })
       .subscribe(
-        (response: Media) => observer.next(response),
+        (media: Object) => observer.next(new Media(media)),
         error => observer.error(error)
       );
     });

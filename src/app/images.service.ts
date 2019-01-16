@@ -18,9 +18,7 @@ export class ImagesService {
   loadImages(mediaList: Media[]) {
 
     this.mediaList = mediaList.sort((a, b) => b.date.localeCompare(a.date))
-      .map((media) => {
-
-        media = new Media(media);
+      .map((media: Media) => {
 
         const image = new Image();
 

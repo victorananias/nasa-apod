@@ -59,6 +59,7 @@ export class HomeComponent implements OnInit {
       end_date: this.endDate
     })
     .subscribe((mediaList: Media[]) => {
+      this.loadingMessage = 'Loading Images';
       this.imagesService.loadImages(mediaList);
     }, error => {
       console.error(error);

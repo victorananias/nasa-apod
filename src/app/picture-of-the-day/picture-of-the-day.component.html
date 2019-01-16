@@ -1,11 +1,8 @@
 <div class="container">
-  <div class="item">
-    <img #imagem>
-    <!-- <img *ngIf="media?.media_type == 'image'" [src]="media.url" [alt]="media.title"> -->
-    <!-- <app-video-frame *ngIf="media?.media_type == 'video'" [src]="media?.url"></app-video-frame> -->
-  </div>
+  <img *ngIf="media?.isImage" [src]="media.src" [alt]="media?.title" class="align-center media">
+  <app-video-frame *ngIf="media?.isVideo" [src]="media?.url" class="align-center media"></app-video-frame>
   
-  <div class="item">
+  <div class="align-center text">
     <h2 class="title">{{ media?.title }}</h2>
     <p>
       {{ media?.explanation }}

@@ -7,10 +7,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { VideoFrameComponent } from './video-frame/video-frame.component';
 import { HeaderComponent } from './header/header.component';
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { PictureOfTheDayComponent } from './picture-of-the-day/picture-of-the-day.component';
 import { MosaicComponent } from './mosaic/mosaic.component';
 import { HomeComponent } from './home/home.component';
 import { SharedModule } from './shared/shared.module';
+import { PictureOfTheDayComponent } from './picture-of-the-day/picture-of-the-day.component';
 
 @NgModule({
   declarations: [

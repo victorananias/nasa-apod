@@ -1,0 +1,20 @@
+.align-center {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    display: block;
+}
+
+.media {
+    max-width: 500px;
+    max-height: 500px;
+}
+
+.title {
+    margin-bottom: 3px;
+}
+
+.text {
+    text-align: justify;
+    max-width: 700px;
+}

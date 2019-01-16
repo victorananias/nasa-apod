@@ -34,4 +34,12 @@ export class Media {
 
     return `https://img.youtube.com/vi/${videoId}/${thumbnailName}`;
   }
+
+  get isVideo() {
+    return this.media_type === 'video';
+  }
+
+  get isImage() {
+    return this.media_type === 'image';
+  }
 }
