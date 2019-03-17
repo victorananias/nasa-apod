@@ -23,7 +23,11 @@ export class Media {
       return this.youtubeSrc;
     }
 
-    return null;
+    if (this.url.includes('vimeo')) {
+      return this.vimeoSrc;
+    }
+
+    throw new Error('video thumbnail not found');
   }
 
   private get youtubeSrc() {
@@ -33,6 +37,16 @@ export class Media {
     const thumbnailName = 'maxresdefault.jpg';
 
     return `https://img.youtube.com/vi/${videoId}/${thumbnailName}`;
+  }
+
+  private get vimeoSrc() {
+    const regExp = /video\/([^)]+)\?/;
+    const videoId = regExp.exec(this.url)[1];
+    console.log(videoId);
+
+    const vimeoUrl = `http://vimeo.com/api/v2/video/${videoId}.OUTPUT`;
+
+    return `https://img.youtube.com/vi/null`;
   }
 
   get isVideo() {
