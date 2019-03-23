@@ -44,8 +44,16 @@ img {
     padding: 0 4px;
 }
 
-.clicavel {
+.clickable {
     cursor: pointer;
+}
+
+.youtube-video {
+    background-color: #FF0000;
+}
+
+.vimeo-video {
+    background-color: rgb(15, 174, 241);
 }
 
 .danger-button {

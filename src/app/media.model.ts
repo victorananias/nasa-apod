@@ -19,16 +19,32 @@ export class Media {
       return this.url;
     }
 
-    if (this.url.includes('youtube')) {
+    if (this.isYoutubeVideo) {
       return this.youtubeSrc;
     }
 
-    if (this.url.includes('vimeo')) {
+    if (this.isVimeoVideo) {
       return this.vimeoSrc;
     }
 
     throw new Error('video thumbnail not found');
   }
+
+  get isVimeoVideo() {
+    return this.url.includes('vimeo');
+  }
+
+  get isYoutubeVideo() {
+    return this.url.includes('youtube');
+  }
+
+  get videoSrc() {
+    if (this.vimeoSrc) {
+      return `${this.url}&title=false&muted=false`;
+    }
+
+    return this.url;
+  } 
 
   private get youtubeSrc() {
     const regExp = /embed\/([^)]+)\?/;
@@ -40,12 +56,7 @@ export class Media {
   }
 
   private get vimeoSrc() {
-    const regExp = /video\/([^)]+)\?/;
-    const videoId = regExp.exec(this.url)[1];
-    console.log(videoId);
-
-    const vimeoUrl = `http://vimeo.com/api/v2/video/${videoId}.OUTPUT`;
-
+    // Not implemented
     return `https://img.youtube.com/vi/null`;
   }
 

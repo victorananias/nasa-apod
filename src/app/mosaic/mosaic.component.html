@@ -1,8 +1,15 @@
 <div class="row" (window:resize)="onResize($event)">
   <div class="column" *ngFor="let column of columns" [style.flex]="flex">
-    <a *ngFor="let item of column" class="item clicavel" (click)="onSelectItem(item)">
+    <a *ngFor="let item of column" class="item clickable" (click)="onSelectItem(item)">
       <h2>{{ item.date | date: 'dd.MM.yyyy' }}</h2>
-      <img [src]="item?.src || ''" [alt]="item.title">
+
+      <img *ngIf="item?.isImage" [src]="item.url" [alt]="item?.title" class="align-center item">
+
+      <div *ngIf="item?.isVideo"
+        [ngClass]="{'item': true, 'align-center': true, 'vimeo-video': item?.isVimeoVideo, 'youtube-video': item?.isYoutubeVideo }" 
+        style="padding-top: 20px">
+        <app-video-frame [src]="item?.videoSrc"></app-video-frame>
+      </div>
     </a>
   </div>
 </div>
