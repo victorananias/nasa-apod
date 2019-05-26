@@ -4,12 +4,14 @@ import { PercentageLoaderComponent } from './percentage-loader/percentage-loader
 import { DotsComponent } from './dots/dots.component';
 import { CircleComponent } from './percentage-loader/circle/circle.component';
 import { Subject } from 'rxjs';
+import { DarkButtonComponent } from './dark-button/dark-button.component';
 
 @NgModule({
   declarations: [
     PercentageLoaderComponent,
     CircleComponent,
-    DotsComponent
+    DotsComponent,
+    DarkButtonComponent
   ],
   imports: [
     CommonModule
@@ -17,7 +19,8 @@ import { Subject } from 'rxjs';
   exports: [
     PercentageLoaderComponent,
     CircleComponent,
-    DotsComponent
+    DotsComponent,
+    DarkButtonComponent
   ],
   providers: [Subject]
 })

@@ -1,5 +1,4 @@
 .item {
-    margin-top: 8px;
     width: 100%;
     vertical-align: middle;
     border-radius: 2px;
@@ -10,6 +9,7 @@
 }
   
 h2 {
+    margin: 0px;
     font-size: 1rem;
     font-family: 'Roboto', sans-serif;
     z-index: 2;

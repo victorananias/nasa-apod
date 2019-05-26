@@ -8,15 +8,14 @@ import * as moment from 'moment';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
   mediaList: Media[] = [];
   endDate;
   maxColumnWidth = 400;
-  loadingMessage = 'Starting App';
-  private _totalItems = 15;
+  loadingMessage = 'Starting App'; 
+  private _totalItems = 30;
 
   constructor(
     private router: Router,
@@ -33,39 +32,14 @@ export class HomeComponent implements OnInit {
 
     this.activatedRoute.queryParams
       .subscribe(params => {
-        if (!params.date) {
-          this.navigateToDate();
-        }
-
         this.endDate = params.date;
 
+        if (!this.endDate) {
+          this.endDate = moment().format('YYYY-MM-DD');
+        }
+
         this.loadImages();
-    });
-  }
-
-  loadImages() {
-    if (this.invalidDate()) {
-      return;
-    }
-
-    this.loadingMessage = 'Connecting to Nasa';
-
-    this.loaderService.totalItems = this.totalItems;
-
-    this.loaderService.show();
-
-    this.service.getMediaList({
-      start_date: this.startDate,
-      end_date: this.endDate
-    })
-    .subscribe((mediaList: Media[]) => {
-      console.log(mediaList);
-      this.loadingMessage = 'Loading Images';
-      this.imagesService.loadImages(mediaList);
-    }, error => {
-      console.error(error);
-      this.loadingMessage = 'Connection Failed';
-    });
+      });
   }
 
   previous() {
@@ -76,6 +50,7 @@ export class HomeComponent implements OnInit {
     if (moment(this.endDate).add(this.totalItems, 'days').diff(moment(), 'days') > 0) {
       return;
     }
+
     this.navigateToDate(moment(this.endDate).add(this.totalItems, 'days').format('YYYY-MM-DD'));
   }
 
@@ -94,16 +69,26 @@ export class HomeComponent implements OnInit {
     return this._totalItems;
   }
 
-  private invalidDate() {
-    if (this.endDate && moment().diff(Object.assign({}, this.endDate), 'days') <= 0) {
-      this.navigateToDate(this.endDate);
-      return;
-    }
-
-    return true;
+  private navigateToDate(date: string) {
+    this.router.navigate(['/'], { queryParams: { date } });
   }
 
-  private navigateToDate(date: string = moment().format('YYYY-MM-DD')) {
-    this.router.navigate(['/'], { queryParams: { date } });
+  private loadImages() {
+    this.loadingMessage = 'Connecting to Nasa';
+
+    this.loaderService.totalItems = this.totalItems;
+
+    this.loaderService.show();
+
+    this.service.getMediaList({
+      start_date: this.startDate,
+      end_date: this.endDate
+    })
+    .subscribe((mediaList: Media[]) => {
+      this.loadingMessage = 'Loading Images';
+      this.imagesService.loadImages(mediaList);
+    }, error => {
+      this.loadingMessage = 'Connection Failed';
+    });
   }
 }
