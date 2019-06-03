@@ -67,4 +67,8 @@ export class Media {
   get isImage() {
     return this.media_type === 'image';
   }
+
+  get allowed() {
+    return !(this.url.toLowerCase().includes('ustream') || this.url.toLowerCase().includes('vimeo'));
+  }
 }

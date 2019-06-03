@@ -1,7 +1,6 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Media } from './media.model';
 import { PercentageLoaderService } from './shared/percentage-loader/percentage-loader.service';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

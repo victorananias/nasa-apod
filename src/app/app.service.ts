@@ -31,7 +31,10 @@ export class AppService {
         params: Object.assign({ api_key: this.apiKey }, params)
       })
       .subscribe((response: any) => {
-          this._mediaList = response.sort((a, b) => b.date.localeCompare(a.date)).map(media => new Media(media));
+          this._mediaList = response.sort((a, b) => b.date.localeCompare(a.date))
+            .map(media => new Media(media))
+            .filter(media => media.allowed);
+            
           observer.next(this._mediaList);
         }, error => observer.error(error));
     });
