@@ -76,7 +76,6 @@ export class HomeComponent implements OnInit {
   private loadImages() {
     this.loadingMessage = 'Connecting to Nasa';
 
-    this.loaderService.totalItems = this.totalItems;
 
     this.loaderService.show();
 
@@ -86,6 +85,9 @@ export class HomeComponent implements OnInit {
     })
     .subscribe((mediaList: Media[]) => {
       this.loadingMessage = 'Loading Images';
+      
+      this.loaderService.totalItems = mediaList.length;
+
       this.imagesService.loadImages(mediaList);
     }, error => {
       this.loadingMessage = 'Connection Failed';
