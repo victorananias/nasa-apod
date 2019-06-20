@@ -10,7 +10,7 @@ import { Media } from '../media.model';
 })
 export class PictureOfTheDayComponent implements OnInit {
   media: Media;
-  @ViewChild('imagem') imagem: ElementRef;
+  @ViewChild('imagem', { static: false }) imagem: ElementRef;
 
   constructor(
     private activatedRoute: ActivatedRoute,
