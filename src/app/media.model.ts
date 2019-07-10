@@ -47,7 +47,8 @@ export class Media {
   } 
 
   private get youtubeSrc() {
-    const regExp = /embed\/([^)]+)\?/;
+    const regExp = this.url.indexOf('?rel') !== -1 ? /embed\/([^)]+)\?/ : /embed\/([^)]+)/;
+
     const videoId = regExp.exec(this.url)[1];
 
     const thumbnailName = 'maxresdefault.jpg';
